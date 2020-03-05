@@ -1,0 +1,175 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int op;
+struct Santiago {
+
+char nombre [20];
+int precio;
+int inventario;
+int pedido;
+
+};
+
+struct Santiago ingresaProductos ();
+void imprimeProductos (struct Santiago productosImpreso);
+
+int main () { 
+
+int *arreglo, num, cont;
+
+printf ("¿De cuantos elementos será el arreglo?");
+scanf("%d",&num);
+
+arreglo = (struct Santiago *) malloc (num * sizeof(struct Santiago));
+if (arreglo!=NULL) {
+printf("Vector reservado:\n\t[");
+for (cont=0 ; cont<num ; cont++){
+printf("\t%d",*(arreglo+cont));
+}
+printf("\t]\n");
+printf("Se libera el espacio reservado.\n");
+free(arreglo);
+}
+
+struct Santiago productos;
+
+int opcion = 1;
+int i;
+while (opcion != 0) {
+printf ("BIENVENIDX A LA TIENDA SANTIAGO\n 1.- Agregar producto\n 2.- Ver Producto\n ");
+scanf ("%d", &opcion);
+fflush (stdin);
+
+switch (opcion) {
+case 1:
+printf ("Seleccione uno de los siguientes productos:\n 1.-Memorias\n 2.-Discos\n 3.-Pantuflados\n 4.-HIDEPRODUCT\n");
+scanf ("%d", &i);
+productos= ingresaProductos();
+break;
+case 2:
+printf("Selecciona el producto que quieres ver\n 1.-Memorias\n 2.-Discos\n 3.-Pantuflados 4.-HIDEPRODUCT\n");
+scanf ("%d", &i);
+imprimeProductos(productos);
+break;
+
+default:
+break;
+}
+}
+}
+
+struct Santiago ingresaProductos () {
+
+struct Santiago nuevoProducto;
+
+printf("Ingresa producto\n");
+scanf("%s", nuevoProducto.nombre);
+fflush(stdin);
+
+printf("Ingresa el precio\n");
+scanf("%d", &nuevoProducto.precio);
+fflush(stdin);
+
+printf("Ingresa el numero en STOCK\n");
+scanf("%d", &nuevoProducto.inventario);
+fflush(stdin);
+
+printf("Ingresa numero de pedidos\n");
+scanf("%d", &nuevoProducto.pedido);
+fflush(stdin);
+
+return nuevoProducto;
+}
+
+void imprimeProductos(struct Santiago productoImpreso){
+printf("El nombre es: %s\n", productoImpreso.nombre);
+printf("El precio es: %d\n", productoImpreso.precio);
+printf("El inventario es: %d\n", productoImpreso.inventario);
+printf("El tptal de pedio es: %d\n", productoImpreso.pedido);
+return;
+}
+-----------------------------------------------------------------------------------
+#include <stdio.h>
+#include <stdlib.h> //biblioteca que incluye malloc, free
+
+struct NodoPila{
+	char dato;
+	struct NodoPila *ptrSiguiente;
+};
+
+void push (struct NodoPila **ptrS);
+void pop(struct NodoPila **ptrS);
+void mostrarPila (struct NodoPila *ptrS);
+
+int main(){
+	struct NodoPila *ptrHead;
+	int opcion=1;
+	ptrHead = NULL;
+    while (opcion != 0) {
+        printf("Selecciona una opcion\n");
+        printf("1.- Push\n2.- Pop\n3.- Mostrar\n0.- Salir\n");
+        scanf("%d", &opcion);
+        fflush(stdin);
+        switch (opcion) {
+            case 1:
+                push(&ptrHead);
+		fflush(stdin);
+                break;
+            case 2:
+                pop(&ptrHead);
+		fflush(stdin);
+                break;
+            case 3:
+                mostrarPila(ptrHead);
+		fflush(stdin);
+                break;
+                
+            default:
+                break;
+        }
+    }
+	return 0;
+}
+
+void push (struct NodoPila **ptrS){
+    struct NodoPila *ptrNuevo;
+    ptrNuevo = (struct NodoPila *)malloc(sizeof(struct NodoPila));
+    if(ptrNuevo != NULL){
+        printf("Escribe la letra\n");
+        scanf("%c", &ptrNuevo->dato);
+        fflush(stdin);
+        ptrNuevo->ptrSiguiente = *ptrS;
+        *ptrS = ptrNuevo;
+    }else{
+        printf("no se creo el nuevo dato\n");
+    }
+}
+
+void pop(struct NodoPila **ptrS){
+    struct NodoPila *prtTemp;
+    char valorEliminado;
+    prtTemp = *ptrS;
+    valorEliminado = (*ptrS)->dato;
+    *ptrS = (*ptrS)->ptrSiguiente;
+    free(prtTemp);
+    
+}
+
+void mostrarPila (struct NodoPila *ptrS){
+    
+    struct NodoPila *ptrActual;
+    
+    if (ptrS == NULL){
+        printf ("pila Vacia\n");
+        return;
+    }
+    ptrActual = ptrS;
+    printf("La Pila Actual es:\n");
+    while (ptrActual != NULL){
+        printf("%c =-=> ", ptrActual->dato);
+        ptrActual = ptrActual->ptrSiguiente;
+    }
+    printf("NULL\n");
+}
+
